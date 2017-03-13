@@ -20,11 +20,11 @@
         <td><%= question.title %></td>
         <td><%= (User.find(question.user_id)).name %></td>
         <td><%= question.content %></td>
-        <td><%= link_to 'Show', question %></td>
+        <td><%= link_to 'Show Answers', question %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <%= link_to 'Back', courses_path %>
-<%= link_to 'New Question', new_question_path %>
+<%= link_to 'New Question', new_question_path(course_id: @course.id) %>

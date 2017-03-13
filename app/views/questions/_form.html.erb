@@ -11,10 +11,7 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :course_id %>
-    <%= f.collection_select(:course_id, @courses, :id, :name, {:prompt => true}) %>
-  </div>
+  <%= f.hidden_field :course_id, :value=> @course_id %>
 
   <div class="field">
     <%= f.label :title %>
@@ -23,7 +20,7 @@
 
   <div class="field">
     <%= f.label :user_id %>
-    <%= f.number_field :user_id %>
+    <%= f.collection_select(:user_id, @users, :id, :name, {:prompt => true}) %>
   </div>
 
   <div class="field">

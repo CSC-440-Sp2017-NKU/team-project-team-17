@@ -21,11 +21,15 @@ class QuestionsController < ApplicationController
   def new
     @question = Question.new
     @courses = Course.all
+    @users = User.all
+    @course_id = params[:course_id]
   end
 
   # GET /questions/1/edit
   def edit
     @courses = Course.all
+    @users = User.all
+    @course = Course.find(@question.course_id)
   end
 
   # POST /questions
@@ -33,9 +37,10 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     @courses = Course.all
+    @users = User.all
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+        format.html { redirect_to course_path(Course.find(@question.course_id)), notice: 'Question was successfully created.' }
         format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
@@ -47,9 +52,10 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
+    @users = User.all
     respond_to do |format|
       if @question.update(question_params)
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
+        format.html { redirect_to course_path(Course.find(@question.course_id)), notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
         format.html { render :edit }
