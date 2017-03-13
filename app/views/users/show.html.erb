@@ -10,5 +10,10 @@
   <%= @user.email %>
 </p>
 
+<p>
+  <strong>Course:</strong>
+  <%= Course.find(@user.course_id).name %>
+</p>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

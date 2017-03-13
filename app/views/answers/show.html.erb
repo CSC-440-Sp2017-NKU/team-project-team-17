@@ -7,7 +7,7 @@
 
 <p>
   <strong>User:</strong>
-  <%= @answer.user_id %>
+  <%= @user.name %>
 </p>
 
 <p>
@@ -16,4 +16,4 @@
 </p>
 
 <%= link_to 'Edit', edit_answer_path(@answer) %> |
-<%= link_to 'Back', answers_path %>
+<%= link_to 'Back', question_path(Question.find(@answer.question_id)) %>

@@ -5,27 +5,34 @@ class QuestionsController < ApplicationController
   # GET /questions.json
   def index
     @questions = Question.all
+    @courses = Course.all
+    @users = User.all
   end
 
   # GET /questions/1
   # GET /questions/1.json
   def show
+    @course = Course.find(@question.course_id)
+    @user = User.find(@question.user_id)
+    @answers = Answer.where(question_id: @question.id)
   end
 
   # GET /questions/new
   def new
     @question = Question.new
+    @courses = Course.all
   end
 
   # GET /questions/1/edit
   def edit
+    @courses = Course.all
   end
 
   # POST /questions
   # POST /questions.json
   def create
     @question = Question.new(question_params)
-
+    @courses = Course.all
     respond_to do |format|
       if @question.save
         format.html { redirect_to @question, notice: 'Question was successfully created.' }
@@ -69,6 +76,6 @@ class QuestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
-      params.require(:question).permit(:course_id, :title, :user_id, :content, :num_answers)
+      params.require(:question).permit(:course_id, :title, :user_id, :content)
     end
 end

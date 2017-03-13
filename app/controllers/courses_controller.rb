@@ -10,6 +10,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
+    @questions = Question.where(course_id: @course.id)
   end
 
   # GET /courses/new
