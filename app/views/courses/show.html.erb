@@ -1,30 +1,53 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Questions for Course: <%= @course.name %></h1>
 
-<br>
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">CSC 440 Demo</a>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>User</th>
-      <th>Content</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="\courses">Courses<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Users</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
 
-  <tbody>
+<br><br><br>
+
+<div class="container-fluid">
+  <div class="col-md-6">
+  <div class="jumbotron">
+    <h1>Questions for Course: <%= @course.name %></h1>
+    <br>
+    <h4><%= link_to 'Ask a New Question', new_question_path(course_id: @course.id) %></h4>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
     <% @questions.each do |question| %>
-      <tr>
-        <td><%= question.title %></td>
-        <td><%= (User.find(question.user_id)).name %></td>
-        <td><%= question.content %></td>
-        <td><%= link_to 'Show Answers', question %></td>
-      </tr>
+      <div class="card">
+        <div class="card-block">
+          <h4 class="card-title"><%= question.title %></h4>
+          <h6 class="card-subtitle mb-2 text-muted">Asked by: <%= (User.find(question.user_id)).name %></h6>
+          <p class="card-text"><%= question.content %></p>
+          <a class="card-link"><%= link_to 'Show Answers', question %></a>
+        </div>
+      </div>
+      <br>
     <% end %>
-  </tbody>
-</table>
+   </div>
+  </div>
+</div>
 
-<%= link_to 'Back', courses_path %>
-<%= link_to 'New Question', new_question_path(course_id: @course.id) %>
+
