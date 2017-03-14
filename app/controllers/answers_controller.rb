@@ -16,6 +16,7 @@ class AnswersController < ApplicationController
   # GET /answers/new
   def new
     @question_id = params[:question_id]
+    @question = Question.find(@question_id)
     @answer = Answer.new
     @users = User.all
   end
