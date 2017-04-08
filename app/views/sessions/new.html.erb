@@ -1,0 +1,16 @@
+<div class="col-md-4">
+  <div class="jumbotron">
+    <h1>Log In</h1>
+    <br>
+    <%= form_for(:session, url: login_path) do |f| %>
+    <div class="form-group">
+        <%= f.label :username %>
+        <%= f.text_field :username, class: 'form-control' %>
+    </div>
+    <div class="form-actions">
+        <%= f.submit "Log in", class: "btn btn-primary" %>
+    </div>
+    <% end %>
+  </div>
+</div>
+
