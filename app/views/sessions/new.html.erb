@@ -1,19 +1,36 @@
-<div class="col-md-4">
-  <div class="jumbotron">
-      <% flash.each do |key, value| %>
-        <div class="alert alert-<%= key %>"><%= value %></div>
-      <% end %>
-    <h1>Log In</h1>
-    <br>
-    <%= form_for(:session, url: login_path) do |f| %>
-    <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, class: 'form-control' %>
+
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">CSC 440 Demo</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      </div>
+    </nav>
+
+<br>
+
+
+<div class="login_centered">
+    <div class="card" style="width: 20rem;">
+        <div class="card-block">
+      <div class="form-signin">
+          <% flash.each do |key, value| %>
+            <div class="alert alert-<%= key %>"><%= value %></div>
+          <% end %>
+        <h2 class="form-signin-heading">Please login</h2>
+        <br>
+        <%= form_for(:session, url: login_path) do |f| %>
+            <div class="form-group">
+                <%= f.email_field :email, :required => true, :class => "form-control", :placeholder => "Email Address"%>
+            </div>
+             <div class="form-actions">
+                  <%= f.submit "Log in", :class => "btn btn-primary" %>
+            </div>
+        <% end %>
+      </div>
     </div>
-    <div class="form-actions">
-        <%= f.submit "Log in", class: "btn btn-primary" %>
     </div>
-    <% end %>
-  </div>
 </div>
 
