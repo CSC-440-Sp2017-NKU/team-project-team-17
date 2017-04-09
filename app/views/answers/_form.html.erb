@@ -12,11 +12,7 @@
   <% end %>
   
   <%= f.hidden_field :question_id, :value=> @question_id %>
-  
-  <div class="form-group">
-    <%= f.label :user_id %>
-    <%= f.collection_select :user_id, @users, :id, :name, {:prompt => true}, {:class => "form-control", :required => true} %>
-  </div>
+  <%= f.hidden_field :user_id, :value=> @current_user.id %>
 
   <div class="form-group">
     <%= f.label :Answer %>

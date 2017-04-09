@@ -36,7 +36,7 @@ class AnswersController < ApplicationController
 
     respond_to do |format|
       if @answer.save
-        format.html { redirect_to question_path(Question.find(@answer.question_id)), notice: 'Answer was successfully created.' }
+        format.html { redirect_to question_path(Question.find(@answer.question_id))}
         format.json { render :show, status: :created, location: @answer }
       else
         format.html { render :new }
@@ -51,7 +51,7 @@ class AnswersController < ApplicationController
     @users = User.all
     respond_to do |format|
       if @answer.update(answer_params)
-        format.html { redirect_to question_path(Question.find(@answer.question_id)), notice: 'Answer was successfully updated.' }
+        format.html { redirect_to question_path(Question.find(@answer.question_id))}
         format.json { render :show, status: :ok, location: @answer }
       else
         format.html { render :edit }
@@ -66,7 +66,7 @@ class AnswersController < ApplicationController
     @question = Question.find(@answer.question_id)
     @answer.destroy
     respond_to do |format|
-      format.html { redirect_to question_path(@question), notice: 'Answer was successfully destroyed.' }
+      format.html { redirect_to question_path(@question)}
       format.json { head :no_content }
     end
   end
