@@ -10,7 +10,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-    <% @questions.each do |question| %>
+    <% @questions.sort_by{|q| q.votes.to_i}.reverse.each do |question| %>
       <div class="card">
         <div class="card-block">
           <h4 class="card-title"><%= question.title %></h4>

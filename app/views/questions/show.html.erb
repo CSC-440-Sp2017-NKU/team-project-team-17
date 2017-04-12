@@ -12,7 +12,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-    <% @answers.each do |answer| %>
+    <% @answers.sort_by{|q| q.votes.to_i}.reverse.each do |answer| %>
       <div class="card">
         <div class="card-block">
           <h6 class="card-subtitle mb-2 text-muted">Answered by: <%= (User.find(answer.user_id)).name %></h6>
