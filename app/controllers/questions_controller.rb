@@ -53,15 +53,20 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1.json
   def update
     @users = User.all
-    respond_to do |format|
-      if @question.update(question_params)
-        format.html { redirect_to course_path(Course.find(@question.course_id))}
-        format.json { render :show, status: :ok, location: @question }
-      else
-        format.html { render :edit }
-        format.json { render json: @question.errors, status: :unprocessable_entity }
-      end
+    @new_votes = @question.votes.to_i + params[:votes].to_i
+    if @new_votes >= 0
+      @question.update(votes: @new_votes)
     end
+    #respond_to do |format|
+     # if @question.update(question_params)
+        #format.html { redirect_to course_path(Course.find(@question.course_id))}
+        #format.json { render :show, status: :ok, location: @question }
+     # else
+        #format.html { render :edit }
+        #format.json { render json: @question.errors, status: :unprocessable_entity }
+     # end
+     
+    #end
   end
 
   # DELETE /questions/1
@@ -82,6 +87,6 @@ class QuestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
-      params.require(:question).permit(:course_id, :title, :user_id, :content)
+      params.require(:question).permit(:course_id, :title, :user_id, :content, :votes)
     end
 end

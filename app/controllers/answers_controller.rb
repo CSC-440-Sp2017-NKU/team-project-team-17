@@ -49,15 +49,19 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1.json
   def update
     @users = User.all
-    respond_to do |format|
-      if @answer.update(answer_params)
-        format.html { redirect_to question_path(Question.find(@answer.question_id))}
-        format.json { render :show, status: :ok, location: @answer }
-      else
-        format.html { render :edit }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
-      end
+    @new_votes = @answer.votes.to_i + params[:votes].to_i
+    if @new_votes >= 0
+      @answer.update(votes: @new_votes)
     end
+   # respond_to do |format|
+      #if @answer.update(answer_params)
+        #format.html { redirect_to question_path(Question.find(@answer.question_id))}
+        #format.json { render :show, status: :ok, location: @answer }
+      #else
+       # format.html { render :edit }
+        #format.json { render json: @answer.errors, status: :unprocessable_entity }
+      #end
+    #end
   end
 
   # DELETE /answers/1
