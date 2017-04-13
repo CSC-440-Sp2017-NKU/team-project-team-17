@@ -25,6 +25,11 @@
     <%= f.label :course %>
     <%= f.collection_select :course_id, @courses, :id, :name, {:prompt => true}, {:class => "form-control", :required => true} %>
   </div>
+  
+  <div class="form-group">
+    <%= f.label :is_admin %>
+    <%= f.check_box :is_admin, :checked => user.is_admin, :required => true, :class => "form-control" %>
+  </div>
 
   <div class="form-actions">
     <%= f.submit :class => "btn btn-primary" %>
