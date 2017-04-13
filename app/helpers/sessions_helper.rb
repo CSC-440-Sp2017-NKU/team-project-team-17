@@ -18,7 +18,7 @@ module SessionsHelper
     end
     
     def user_is_admin?
-        #current_user.is_admin == true
+        current_user.is_admin == true
     end
   
 end

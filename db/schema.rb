@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411212521) do
+ActiveRecord::Schema.define(version: 20170413165747) do
 
   create_table "answers", force: :cascade do |t|
     t.integer  "question_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170411212521) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "course_id"
+    t.boolean  "is_admin"
   end
 
 end
