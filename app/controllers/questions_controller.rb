@@ -56,8 +56,9 @@ class QuestionsController < ApplicationController
     @new_votes = @question.votes.to_i + params[:votes].to_i
     if @new_votes >= 0
       @question.update(votes: @new_votes)
-    end
-    #respond_to do |format|
+      respond_to do |format|
+      format.js {render :show}
+      format.html
      # if @question.update(question_params)
         #format.html { redirect_to course_path(Course.find(@question.course_id))}
         #format.json { render :show, status: :ok, location: @question }
@@ -65,8 +66,9 @@ class QuestionsController < ApplicationController
         #format.html { render :edit }
         #format.json { render json: @question.errors, status: :unprocessable_entity }
      # end
-     
-    #end
+     end
+    end
+    
   end
 
   # DELETE /questions/1

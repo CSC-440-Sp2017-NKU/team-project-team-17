@@ -52,6 +52,9 @@ class AnswersController < ApplicationController
     @new_votes = @answer.votes.to_i + params[:votes].to_i
     if @new_votes >= 0
       @answer.update(votes: @new_votes)
+      respond_to do |format|
+      format.js {render :show}
+      format.html
     end
    # respond_to do |format|
       #if @answer.update(answer_params)
@@ -61,7 +64,7 @@ class AnswersController < ApplicationController
        # format.html { render :edit }
         #format.json { render json: @answer.errors, status: :unprocessable_entity }
       #end
-    #end
+    end
   end
 
   # DELETE /answers/1

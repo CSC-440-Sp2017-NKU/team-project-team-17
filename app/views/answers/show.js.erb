@@ -1,0 +1,5 @@
+try{
+    $("#a_vote_<%= @answer.id %>").find().prevObject[0].innerHTML = ("<%= @new_votes %> votes")
+} catch(err){
+    console.log(err)
+}
