@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
   def show
     @course = Course.find(@question.course_id)
     @user = User.find(@question.user_id)
-    @answers = Answer.where(question_id: @question.id)
+    @answers = Answer.select("answers.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.answer_id = answers.id").where(question_id: @question.id).group("answers.id")
   end
 
   # GET /questions/new
@@ -56,12 +56,10 @@ class QuestionsController < ApplicationController
   def update
       respond_to do |format|
       format.js {
-        @users = User.all
-        @new_votes = @question.votes.to_i + params[:votes].to_i
-        if @new_votes >= 0
-          @question.update(votes: @new_votes)
-          render :show
-        end
+        new_vote = Vote.new(user_id: params[:current_user].to_i, question_id: @question.id, answer_id: nil, score: params[:votes].to_i)
+        new_vote.save
+        @score = Vote.where(question_id: @question.id).sum(:score)
+        render :show
       }
       format.html {
         @question.update(question_params)
@@ -82,9 +80,11 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
+    @course = Course.find(@question.course_id)
+    Answer.destroy_all(question_id: @question.id)
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to questions_url}
+      format.html { redirect_to course_path(@course)}
       format.json { head :no_content }
     end
   end

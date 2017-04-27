@@ -10,21 +10,22 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-    <% @questions.sort_by{|q| q.votes.to_i}.reverse.each do |question| %>
+    <% @questions.sort_by{|q| q.score.to_i}.reverse.each do |question| %>
       <div class="card">
         <div class="card-block">
           <h4 class="card-title"><%= question.title %></h4>
           <h6 class="card-subtitle mb-2 text-muted">Asked by: <%= (User.find(question.user_id)).name %></h6>
           <p class="card-text"><%= question.content %></p>
-          <p id="q_vote_<%= question.id %>"><%= pluralize(question.votes, "votes") %></p>
+          <p id="q_vote_<%= question.id %>">Score: <%= Vote.where(question_id: question.id).sum(:score) %></p>
             <div class="btn-group">
-              <a><%= button_to '&#8679;'.html_safe, question_path(question), method: :put, :remote => true, dataType: "js", params: {course_id: question.course_id, title: question.title, content:question.content, user_id:question.user_id, votes: 1} %></a>
-              <a><%= button_to '&#8681;'.html_safe, question_path(question), method: :put, :remote => true, dataType: "js", params: {course_id: question.course_id, title: question.title, content:question.content, user_id:question.user_id, votes: -1} %></a>
+              <a><%= button_to '&#8679;'.html_safe, question_path(question), method: :put, :remote => true, dataType: "js", params: {course_id: question.course_id, title: question.title, content:question.content, user_id:question.user_id, votes: 1, current_user: @current_user.id} %></a>
+              <a><%= button_to '&#8681;'.html_safe, question_path(question), method: :put, :remote => true, dataType: "js", params: {course_id: question.course_id, title: question.title, content:question.content, user_id:question.user_id, votes: -1, current_user: @current_user.id} %></a>
             </div>
             <br><br>
           <a class="card-link"><%= link_to "See #{Answer.where(question_id: question.id).count} Answers", question %></a>
           <% if user_is_admin? %>
           <a class="card-link"> | <%= link_to 'Edit', edit_question_path(question) %></a>
+          <a class="card-link"> | <%= link_to 'Delete', question_path(question), :method => :delete %></a>
           <% end %>
         </div>
       </div>

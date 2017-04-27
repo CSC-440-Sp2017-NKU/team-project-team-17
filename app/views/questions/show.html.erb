@@ -8,23 +8,25 @@
     <p><%= @question.content %></p>
     <br>
     <h6><%= link_to 'Answer this question', new_answer_path(question_id: @question.id) %></h6>
+    <a><%= link_to 'Back to Course', course_path(@course) %></a>
   </div>
   </div>
   <div class="row">
     <div class="col-md-6">
-    <% @answers.sort_by{|q| q.votes.to_i}.reverse.each do |answer| %>
+    <% @answers.sort_by{|a| a.score.to_i}.reverse.each do |answer| %>
       <div class="card">
         <div class="card-block">
           <h6 class="card-subtitle mb-2 text-muted">Answered by: <%= (User.find(answer.user_id)).name %></h6>
           <p class="card-text"><%= answer.content %></p>
-          <p id="a_vote_<%=answer.id%>"><%= pluralize(answer.votes, "votes") %></p>
+          <p id="a_vote_<%=answer.id%>">Score: <%= Vote.where(answer_id: answer.id).sum(:score) %></p>
             <div class="btn-group">
-              <a><%= button_to '&#8679;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: 1} %></a>
-              <a><%= button_to '&#8681;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: -1} %></a>
+              <a><%= button_to '&#8679;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: 1, current_user: @current_user.id} %></a>
+              <a><%= button_to '&#8681;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: -1, current_user: @current_user.id} %></a>
             </div>
             <br><br>
           <% if user_is_admin? %>
           <a class="card-link"><%= link_to 'Edit', edit_answer_path(answer) %></a>
+          <a class="card-link"> | <%= link_to 'Delete', answer_path(answer), :method => :delete %></a>
           <% end %>
         </div>
       </div>

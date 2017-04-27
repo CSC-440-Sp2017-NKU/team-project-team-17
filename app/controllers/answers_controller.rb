@@ -51,12 +51,10 @@ class AnswersController < ApplicationController
   def update
     respond_to do |format|
       format.js {
-        @users = User.all
-        @new_votes = @answer.votes.to_i + params[:votes].to_i
-        if @new_votes >= 0
-          @answer.update(votes: @new_votes)
-          render :show
-        end
+        new_vote = Vote.new(user_id: params[:current_user].to_i, question_id: nil, answer_id: @answer.id, score: params[:votes].to_i)
+        new_vote.save
+        @score = Vote.where(answer_id: @answer.id).sum(:score)
+        render :show
       }
       format.html {
         @answer.update(answer_params)
@@ -94,6 +92,6 @@ class AnswersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def answer_params
-      params.require(:answer).permit(:question_id, :user_id, :content)
+      params.require(:answer).permit(:question_id, :user_id, :content, :votes, :current_user)
     end
 end

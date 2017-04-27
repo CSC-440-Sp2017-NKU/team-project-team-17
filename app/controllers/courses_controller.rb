@@ -11,7 +11,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
-    @questions = Question.where(course_id: @course.id)
+    @questions = Question.select("questions.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.question_id = questions.id").where(course_id: @course.id).group("questions.id")
     @answers = Answer.all
   end
 
