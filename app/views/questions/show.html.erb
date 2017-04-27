@@ -19,11 +19,15 @@
           <h6 class="card-subtitle mb-2 text-muted">Answered by: <%= (User.find(answer.user_id)).name %></h6>
           <p class="card-text"><%= answer.content %></p>
           <p id="a_vote_<%=answer.id%>">Score: <%= Vote.where(answer_id: answer.id).sum(:score) %></p>
+          <% if (Vote.where(user_id: @current_user.id).where(answer_id: answer.id)).empty?%>
+          <div id="a_buttons_<%=answer.id%>">
             <div class="btn-group">
               <a><%= button_to '&#8679;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: 1, current_user: @current_user.id} %></a>
               <a><%= button_to '&#8681;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: -1, current_user: @current_user.id} %></a>
             </div>
             <br><br>
+          </div>
+          <% end %>
           <% if user_is_admin? %>
           <a class="card-link"><%= link_to 'Edit', edit_answer_path(answer) %></a>
           <a class="card-link"> | <%= link_to 'Delete', answer_path(answer), :method => :delete %></a>

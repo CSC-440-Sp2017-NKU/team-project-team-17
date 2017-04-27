@@ -1,5 +1,6 @@
 try{
     $("#q_vote_<%= @question.id %>").find().prevObject[0].innerHTML = ("Score: <%= @score %>")
+    $("#q_buttons_<%= @question.id %>").hide()
 } catch(err){
     console.log(err)
 }
