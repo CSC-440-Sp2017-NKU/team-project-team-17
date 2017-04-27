@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :edit, :update, :destroy]
+  before_filter :require_admin, only: [:edit]
 
   # GET /answers
   # GET /answers.json
@@ -48,14 +49,20 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    @users = User.all
-    @new_votes = @answer.votes.to_i + params[:votes].to_i
-    if @new_votes >= 0
-      @answer.update(votes: @new_votes)
-      respond_to do |format|
-      format.js {render :show}
-      format.html
-    end
+    respond_to do |format|
+      format.js {
+        @users = User.all
+        @new_votes = @answer.votes.to_i + params[:votes].to_i
+        if @new_votes >= 0
+          @answer.update(votes: @new_votes)
+          render :show
+        end
+      }
+      format.html {
+        @answer.update(answer_params)
+        redirect_to question_path(Question.find(@answer.question_id))
+        
+      }
    # respond_to do |format|
       #if @answer.update(answer_params)
         #format.html { redirect_to question_path(Question.find(@answer.question_id))}

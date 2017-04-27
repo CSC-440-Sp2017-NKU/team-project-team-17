@@ -16,7 +16,9 @@
     <% end %>
    </div>
   </div>
+  <% if user_is_admin? %>
   <%= link_to 'Create a New Course', new_course_path %>
+  <% end %>
 </div>
 
 

@@ -23,6 +23,9 @@
               <a><%= button_to '&#8681;'.html_safe, answer_path(answer), method: :put, :remote => true, dataType: "js", params: {question_id: answer.question_id, content:answer.content, user_id:answer.user_id, votes: -1} %></a>
             </div>
             <br><br>
+          <% if user_is_admin? %>
+          <a class="card-link"><%= link_to 'Edit', edit_answer_path(answer) %></a>
+          <% end %>
         </div>
       </div>
       <br>

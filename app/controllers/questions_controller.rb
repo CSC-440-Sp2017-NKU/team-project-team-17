@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_filter :require_admin, only: [:edit]
 
   # GET /questions
   # GET /questions.json
@@ -30,6 +31,7 @@ class QuestionsController < ApplicationController
     @courses = Course.all
     @users = User.all
     @course = Course.find(@question.course_id)
+    @course_id = @course.id
   end
 
   # POST /questions
@@ -52,13 +54,20 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
-    @users = User.all
-    @new_votes = @question.votes.to_i + params[:votes].to_i
-    if @new_votes >= 0
-      @question.update(votes: @new_votes)
       respond_to do |format|
-      format.js {render :show}
-      format.html
+      format.js {
+        @users = User.all
+        @new_votes = @question.votes.to_i + params[:votes].to_i
+        if @new_votes >= 0
+          @question.update(votes: @new_votes)
+          render :show
+        end
+      }
+      format.html {
+        @question.update(question_params)
+        redirect_to course_path(Course.find(@question.course_id))
+        
+      }
      # if @question.update(question_params)
         #format.html { redirect_to course_path(Course.find(@question.course_id))}
         #format.json { render :show, status: :ok, location: @question }
@@ -66,7 +75,6 @@ class QuestionsController < ApplicationController
         #format.html { render :edit }
         #format.json { render json: @question.errors, status: :unprocessable_entity }
      # end
-     end
     end
     
   end

@@ -23,6 +23,9 @@
             </div>
             <br><br>
           <a class="card-link"><%= link_to "See #{Answer.where(question_id: question.id).count} Answers", question %></a>
+          <% if user_is_admin? %>
+          <a class="card-link"> | <%= link_to 'Edit', edit_question_path(question) %></a>
+          <% end %>
         </div>
       </div>
       <br>
