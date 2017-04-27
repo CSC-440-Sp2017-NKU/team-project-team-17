@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :require_admin
+  before_filter :require_admin, except: [:show_me]
   # GET /users
   # GET /users.json
   def index
@@ -10,6 +10,16 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+  end
+  
+  # GET /users/me
+  def show_me
+    @user = @current_user
+    @user_questions = Question.select("questions.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.question_id = questions.id").where(user_id: @current_user.id).group("questions.id")
+    @user_answers = Answer.select("answers.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.answer_id = answers.id").where(user_id: @current_user.id).group("answers.id")
+    @user_score = 0
+    @user_questions.each { |q| @user_score+=q.score.to_i }
+    @user_answers.each { |a| @user_score+=a.score.to_i }
   end
 
   # GET /users/new

@@ -1,0 +1,27 @@
+
+
+<div class="col-md-4">
+  <div class="jumbotron">
+    <h1>My Profile</h1>
+    <br>
+    <p>
+      <strong>Name:</strong>
+      <%= @user.name %>
+    </p>
+    
+    <p>
+      <strong>Email:</strong>
+      <%= @user.email %>
+    </p>
+    
+    <p>
+      <strong>Course:</strong>
+      <%= Course.find(@user.course_id).name %>
+    </p>
+    
+    <p>
+      <strong>Score:</strong>
+      <%= @user_score %>
+    </p>
+  </div>
+  </div>
