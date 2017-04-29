@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
   get    '/users/me',   to: 'users#show_me'
+  post    '/search',   to: 'search#show'  
+  get    '/search',   to: 'courses#index' 
 
   resources :users
   resources :answers
