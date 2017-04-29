@@ -1,5 +1,7 @@
 
 <div class="col-md-6">
+  <h5><%= link_to 'New Single User', new_user_path %> </h5>
+  <br>
 <table class="table">
   <thead>
     <tr>
@@ -28,7 +30,15 @@
     <% end %>
   </tbody>
 </table>
-<%= link_to 'New User', new_user_path %>
+<br>
+  <div>
+    <%= form_tag import_users_path, multipart: true do %>
+      <div class="form-group">
+        <%= file_field_tag :file, :class =>"btn btn-default btn-file"  %>
+        <%= submit_tag("Import", :class => "btn btn-primary") %>
+      </div>
+    <% end %>
+  </div>
 </div>
 <br>
 

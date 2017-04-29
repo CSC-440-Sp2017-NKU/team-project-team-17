@@ -1,3 +1,5 @@
+require 'csv'
+
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :require_admin, except: [:show_me]
@@ -70,6 +72,11 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def import
+    User.import(params[:file])
+    redirect_to users_url
   end
 
   # DELETE /users/1

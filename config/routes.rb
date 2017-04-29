@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   post    '/search',   to: 'search#show'  
   get    '/search',   to: 'courses#index' 
 
-  resources :users
+  resources :users do
+    collection { post :import }
+  end
   resources :answers
   resources :questions
   resources :courses

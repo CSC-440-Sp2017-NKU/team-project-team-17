@@ -20,6 +20,8 @@ gem 'jbuilder',     '2.4.1'
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'bootstrap-multiselect-rails'
 gem 'autoprefixer-rails'
+gem 'roo'
+gem 'iconv'
 
 group :development, :test do
   gem 'sqlite3', '1.3.12'
