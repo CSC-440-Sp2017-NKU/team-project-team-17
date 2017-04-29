@@ -18,6 +18,7 @@ gem 'jquery-rails', '4.1.1'
 gem 'turbolinks',   '5.0.1'
 gem 'jbuilder',     '2.4.1'
 gem 'bootstrap', '~> 4.0.0.alpha6'
+gem 'bootstrap-multiselect-rails'
 gem 'autoprefixer-rails'
 
 group :development, :test do

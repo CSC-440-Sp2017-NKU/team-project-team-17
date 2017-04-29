@@ -15,8 +15,13 @@
     </p>
     
     <p>
-      <strong>Course:</strong>
-      <%= Course.find(@user.course_id).name %>
+      <strong>Courses: </strong>
+      <%if @user.courses.length >=1%>
+            <%= "| " %>
+            <% @user.courses.each do |course| %>
+              <%= course.name + " | " %>
+            <% end %>
+      <% end %>
     </p>
     
     <p>

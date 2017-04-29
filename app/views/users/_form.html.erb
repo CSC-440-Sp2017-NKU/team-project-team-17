@@ -1,3 +1,39 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+     //$(document).ready(function() {
+       // $('#user_course_id').multiselect();
+    //});
+    $(document).ready(function() {
+        $('#user_course_ids').multiselect({
+            onChange: function(option, checked) {
+                // Get selected options.
+                var selectedOptions = $('#user_course_ids option:selected');
+                if (selectedOptions.length >= 3) {
+                    // Disable all other checkboxes.
+                    var nonSelectedOptions = $('#user_course_ids option').filter(function() {
+                        return !$(this).is(':selected');
+                    });
+ 
+                    nonSelectedOptions.each(function() {
+                        var input = $('input[value="' + $(this).val() + '"]');
+                        input.prop('disabled', true);
+                        input.parent('li').addClass('disabled');
+                    });
+                }
+                else {
+                    // Enable all checkboxes.
+                    $('#user_course_ids option').each(function() {
+                        var input = $('input[value="' + $(this).val() + '"]');
+                        input.prop('disabled', false);
+                        input.parent('li').addClass('disabled');
+                    });
+                }
+            }
+        });
+    });
+  </script>
+<% end %>
+
 <%= form_for(user) do |f| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
@@ -22,13 +58,13 @@
   </div>
   
   <div class="form-group">
-    <%= f.label :course %>
-    <%= f.collection_select :course_id, @courses, :id, :name, {:prompt => true}, {:class => "form-control", :required => true} %>
+    <%= f.label :Select_up_to_3_courses %>
+    <%= f.collection_select :course_ids, @courses, :id, :name, {:prompt => false}, {:multiple => true, :class => "form-control", :required => true} %>
   </div>
   
   <div class="form-group">
     <%= f.label :is_admin %>
-    <%= f.check_box :is_admin, :checked => user.is_admin, :required => true, :class => "form-control" %>
+    <%= f.check_box :is_admin, :checked => user.is_admin, :class => "form-control" %>
   </div>
 
   <div class="form-actions">

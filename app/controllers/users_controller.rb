@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :require_admin, except: [:show_me]
+  skip_before_filter :verify_authenticity_token, only: [:new]
   # GET /users
   # GET /users.json
   def index
@@ -36,8 +37,12 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
-    @courses = Course.all
+    @user = User.new()
+    @user.name = params[:user][:name]
+    @user.email = params[:user][:email]
+    @user.is_admin = params[:user][:is_admin]
+    @courses = Course.where(:id => params[:user][:course_ids])
+    @user.courses << @courses
     respond_to do |format|
       if @user.save
         format.html { redirect_to users_path}
@@ -52,8 +57,12 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    @user = User.find(params[:id])
+    @courses = Course.where(:id => params[:user][:course_ids])
+    @user.courses.destroy_all
+    @user.courses << @courses
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.save()
         format.html { redirect_to users_path}
         format.json { render :show, status: :ok, location: @user }
       else

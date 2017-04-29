@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    belongs_to :course
+    has_and_belongs_to_many :courses
     has_many :questions
     has_many :answers
     validates :email, uniqueness: true
