@@ -20,5 +20,9 @@ module SessionsHelper
     def user_is_admin?
         current_user.is_admin == true
     end
+    
+    def user_is_registrar?
+        current_user.is_registrar == true
+    end
   
 end

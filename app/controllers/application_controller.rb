@@ -18,4 +18,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def require_admin_registrar
+    unless current_user.is_admin || current_user.is_registrar
+      redirect_to courses_url
+    end
+  end
+  
 end

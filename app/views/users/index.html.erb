@@ -8,6 +8,8 @@
       <th>Name</th>
       <th>Email</th>
       <th>Courses</th>
+      <th>Registrar</th>
+      <th>Admin</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -25,7 +27,17 @@
             <% end %>
           <% end %>
         </td>
+        <td><% if user.is_registrar %>
+            <%= '&#10004;'.html_safe %>
+            <% end %>
+        </td>
+        <td><% if user.is_admin %>
+            <%= '&#10004;'.html_safe %>
+            <% end %>
+        </td>
+        <% if user_is_admin? %>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

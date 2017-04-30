@@ -2,7 +2,7 @@ require 'csv'
 
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :require_admin, except: [:show_me]
+  before_filter :require_admin_registrar, except: [:show_me]
   skip_before_filter :verify_authenticity_token, only: [:new]
   # GET /users
   # GET /users.json
@@ -43,6 +43,7 @@ class UsersController < ApplicationController
     @user.name = params[:user][:name]
     @user.email = params[:user][:email]
     @user.is_admin = params[:user][:is_admin]
+    @user.is_registrar = params[:user][:is_registrar]
     @courses = Course.where(:id => params[:user][:course_ids])
     @user.courses << @courses
     respond_to do |format|
@@ -60,6 +61,10 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    @user.name = params[:user][:name]
+    @user.email = params[:user][:email]
+    @user.is_admin = params[:user][:is_admin]
+    @user.is_registrar = params[:user][:is_registrar]
     @courses = Course.where(:id => params[:user][:course_ids])
     @user.courses.destroy_all
     @user.courses << @courses
@@ -97,6 +102,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :course_id, :is_admin)
+      params.require(:user).permit(:name, :email, :course_id, :is_admin, :is_registrar)
     end
 end

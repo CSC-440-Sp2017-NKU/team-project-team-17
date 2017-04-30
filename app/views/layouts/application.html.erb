@@ -19,7 +19,7 @@
           <li class="nav-item">
             <a class="nav-link" href="\courses">Courses<span class="sr-only">(current)</span></a>
           </li>
-          <% if user_is_admin? %>
+          <% if user_is_admin? || user_is_registrar? %>
           <li class="nav-item">
             <a class="nav-link" href="\users">Users</a>
           </li>
