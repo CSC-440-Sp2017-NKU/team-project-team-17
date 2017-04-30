@@ -27,7 +27,7 @@
             </div>
           <% end %>
           <a class="card-link"><%= link_to "See #{Answer.where(question_id: question.id).count} Answers", question %></a>
-          <% if user_is_admin? %>
+          <% if user_is_admin? || question.user_id == @current_user.id %>
           <a class="card-link"> | <%= link_to 'Edit', edit_question_path(question) %></a>
           <a class="card-link"> | <%= link_to 'Delete', question_path(question), :method => :delete %></a>
           <% end %>
