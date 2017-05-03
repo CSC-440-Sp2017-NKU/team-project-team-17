@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-block">
           <h4 class="card-title"><%= question.title %></h4>
-          <h6 class="card-subtitle mb-2 text-muted">Asked by: <%= (User.find(question.user_id)).name %></h6>
+          <h6 class="card-subtitle mb-2 text-muted">Asked by: <%= (User.find(question.user_id)).name %> in <%= (Course.find(question.course_id)).name %></h6>
           <p class="card-text"><%= question.content %></p>
           <p id="q_vote_<%= question.id %>">Score: <%= Vote.where(question_id: question.id).sum(:score) %></p>
           <% if (Vote.where(user_id: @current_user.id).where(question_id: question.id)).empty?%>
