@@ -27,10 +27,14 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/edit
   def edit
-    @courses = Course.all
-    @users = User.all
-    @course = Course.find(@question.course_id)
-    @course_id = @course.id
+    if (@current_user.id == @question.user_id) || user_is_admin?
+      @courses = Course.all
+      @users = User.all
+      @course = Course.find(@question.course_id)
+      @course_id = @course.id
+    else
+      redirect_to courses_url
+    end
   end
 
   # POST /questions
@@ -53,6 +57,7 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
+    
       respond_to do |format|
       format.js {
         new_vote = Vote.new(user_id: params[:current_user].to_i, question_id: @question.id, answer_id: nil, score: params[:votes].to_i)
@@ -61,30 +66,29 @@ class QuestionsController < ApplicationController
         render :show
       }
       format.html {
-        @question.update(question_params)
-        redirect_to course_path(Course.find(@question.course_id))
-        
+        if (@current_user.id == @question.user_id) || user_is_admin?
+          @question.update(question_params)
+          redirect_to course_path(Course.find(@question.course_id))
+        else
+          redirect_to courses_url
+        end
       }
-     # if @question.update(question_params)
-        #format.html { redirect_to course_path(Course.find(@question.course_id))}
-        #format.json { render :show, status: :ok, location: @question }
-     # else
-        #format.html { render :edit }
-        #format.json { render json: @question.errors, status: :unprocessable_entity }
-     # end
-    end
-    
+      end
   end
 
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
-    @course = Course.find(@question.course_id)
-    Answer.destroy_all(question_id: @question.id)
-    @question.destroy
-    respond_to do |format|
-      format.html { redirect_to course_path(@course)}
-      format.json { head :no_content }
+    if (@current_user.id == @question.user_id) || user_is_admin?
+      @course = Course.find(@question.course_id)
+      Answer.destroy_all(question_id: @question.id)
+      @question.destroy
+      respond_to do |format|
+        format.html { redirect_to course_path(@course)}
+        format.json { head :no_content }
+      end
+    else
+      redirect_to courses_url
     end
   end
 

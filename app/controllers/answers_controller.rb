@@ -23,9 +23,13 @@ class AnswersController < ApplicationController
 
   # GET /answers/1/edit
   def edit
-    @users = User.all
-    @question_id = @answer.question_id
-    @question = Question.find(@question_id)
+    if (@current_user.id == @answer.user_id) || user_is_admin?
+      @users = User.all
+      @question_id = @answer.question_id
+      @question = Question.find(@question_id)
+    else
+      redirect_to courses_url
+    end
   end
 
   # POST /answers
@@ -48,37 +52,37 @@ class AnswersController < ApplicationController
   # PATCH/PUT /answers/1
   # PATCH/PUT /answers/1.json
   def update
-    respond_to do |format|
-      format.js {
-        new_vote = Vote.new(user_id: params[:current_user].to_i, question_id: nil, answer_id: @answer.id, score: params[:votes].to_i)
-        new_vote.save
-        @score = Vote.where(answer_id: @answer.id).sum(:score)
-        render :show
-      }
-      format.html {
-        @answer.update(answer_params)
-        redirect_to question_path(Question.find(@answer.question_id))
-        
-      }
-   # respond_to do |format|
-      #if @answer.update(answer_params)
-        #format.html { redirect_to question_path(Question.find(@answer.question_id))}
-        #format.json { render :show, status: :ok, location: @answer }
-      #else
-       # format.html { render :edit }
-        #format.json { render json: @answer.errors, status: :unprocessable_entity }
-      #end
-    end
+    
+      respond_to do |format|
+        format.js {
+          new_vote = Vote.new(user_id: params[:current_user].to_i, question_id: nil, answer_id: @answer.id, score: params[:votes].to_i)
+          new_vote.save
+          @score = Vote.where(answer_id: @answer.id).sum(:score)
+          render :show
+        }
+        format.html {
+          if (@current_user.id == @answer.user_id) || user_is_admin?
+            @answer.update(answer_params)
+            redirect_to question_path(Question.find(@answer.question_id))
+          else
+            redirect_to courses_url
+          end
+        }
+      end
   end
 
   # DELETE /answers/1
   # DELETE /answers/1.json
   def destroy
-    @question = Question.find(@answer.question_id)
-    @answer.destroy
-    respond_to do |format|
-      format.html { redirect_to question_path(@question)}
-      format.json { head :no_content }
+    if (@current_user.id == @answer.user_id) || user_is_admin?
+      @question = Question.find(@answer.question_id)
+      @answer.destroy
+      respond_to do |format|
+        format.html { redirect_to question_path(@question)}
+        format.json { head :no_content }
+      end
+    else
+      redirect_to courses_url
     end
   end
 
