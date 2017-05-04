@@ -1,2 +1,2 @@
-"name","email","is_admin","course_1","course_2","course_3"
-"Bobby Test","bob@test2.com","false","1","",""
+"name","email","is_admin","is_registrar","course_1","course_2","course_3"
+"Bobby Test","bob@test2.com","false","false","1","",""

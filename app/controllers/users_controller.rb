@@ -80,8 +80,19 @@ class UsersController < ApplicationController
   end
   
   def import
-    User.import(params[:file])
-    redirect_to users_url
+    @users = User.all
+    respond_to do |format|
+      format.html { 
+        begin
+          User.import(params[:file])
+          $message = "Created Users Successfully"
+        rescue
+          $message= "#{$!}"
+        ensure
+          redirect_to users_url
+        end
+      }
+    end
   end
 
   # DELETE /users/1
