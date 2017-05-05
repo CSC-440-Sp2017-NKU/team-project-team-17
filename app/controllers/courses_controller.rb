@@ -11,6 +11,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
+    #this select gets all questions for this course, and includes the summed score for all the votes on each question
     @questions = Question.select("questions.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.question_id = questions.id").where(course_id: @course.id).group("questions.id")
     @answers = Answer.all
   end

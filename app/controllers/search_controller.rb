@@ -2,8 +2,9 @@ class SearchController < ApplicationController
     def show
         
         @query = params[:query]
+        #make sure we dont search for an empty string, becuase the database treats this like a wildcard and will return all questions
         if @query.eql? ""
-            redirect_to :back
+            redirect_to :back #this redirects to the place the request came from, so to the user this just looks like a refresh
         else
             @questions = Question.select("questions.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.question_id = questions.id").group("questions.id")
             @answers = Answer.all

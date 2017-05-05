@@ -14,6 +14,7 @@ class QuestionsController < ApplicationController
   def show
     @course = Course.find(@question.course_id)
     @user = User.find(@question.user_id)
+    #this select gets all answers for this question, and includes the summed score for all the votes on each answer
     @answers = Answer.select("answers.*, SUM(votes.score) score").joins("LEFT OUTER JOIN votes on votes.answer_id = answers.id").where(question_id: @question.id).group("answers.id")
   end
 
@@ -27,6 +28,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/edit
   def edit
+    #make sure we only let admins edit questions, or the current user edit their own questions
     if (@current_user.id == @question.user_id) || user_is_admin?
       @courses = Course.all
       @users = User.all
@@ -60,12 +62,15 @@ class QuestionsController < ApplicationController
     
       respond_to do |format|
       format.js {
+        #if a request comes in as JS, we know its an AJAX call, so treat it as such. 
+        #the only AJAX call that is made to update is a vote, so we update the score
         new_vote = Vote.new(user_id: params[:current_user].to_i, question_id: @question.id, answer_id: nil, score: params[:votes].to_i)
         new_vote.save
         @score = Vote.where(question_id: @question.id).sum(:score)
         render :show
       }
       format.html {
+        #an html request coming in to update is going to be a regular update from the form, so just update the question record
         if (@current_user.id == @question.user_id) || user_is_admin?
           @question.update(question_params)
           redirect_to course_path(Course.find(@question.course_id))
@@ -79,6 +84,7 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1
   # DELETE /questions/1.json
   def destroy
+    #make sure we only let admins delete questions, or the current user delete their own questions
     if (@current_user.id == @question.user_id) || user_is_admin?
       @course = Course.find(@question.course_id)
       Answer.destroy_all(question_id: @question.id)
